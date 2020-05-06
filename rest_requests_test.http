@@ -1,0 +1,17 @@
+GET http://localhost:3000/riskAnalyses/1
+Accept: application/json
+
+###
+POST http://localhost:3000/riskAnalyses
+Content-Type: application/json
+
+{
+  "id": "1",
+  "ma_period": "20"
+}
+
+###
+GET http://localhost:3000/assets
+Accept: application/json
+
+###

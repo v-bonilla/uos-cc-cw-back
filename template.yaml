@@ -1,0 +1,166 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  uos-cc-cw-back-v1
+  Template for the back end system of the coursework of Cloud Computing (COMM034) in University of Surrey
+
+Globals:
+  Function:
+    Timeout: 180
+
+Parameters:
+  S3BucketName: 
+    Type: String
+    Default: uos-cc-cw
+
+Resources:
+  ListS3ObjectKeysWithPrefixFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: list_s3_object_keys_with_prefix/
+      Handler: app.lambda_handler
+      Runtime: python3.7
+      FunctionName: ListS3ObjectKeysWithPrefixFunction
+      Environment:
+        Variables:
+          S3_BUCKET_NAME:
+            Ref: S3BucketName
+      Policies:
+        - S3ReadPolicy:
+            BucketName:
+              Ref: S3BucketName
+  AnalyseRiskFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: analyse_risk/
+      Handler: app.lambda_handler
+      Runtime: python3.7
+      FunctionName: AnalyseRiskFunction
+      Environment:
+        Variables:
+          S3_BUCKET_NAME:
+            Ref: S3BucketName
+      Policies:
+        - S3ReadPolicy:
+            BucketName:
+              Ref: S3BucketName
+        - S3WritePolicy:
+            BucketName:
+              Ref: S3BucketName
+        - LambdaInvokePolicy:
+            FunctionName:
+              Ref: BrowseRiskAnalysesFunction
+  CreateRiskAnalysisFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: create_risk_analysis/
+      Handler: app.lambda_handler
+      Runtime: python3.7
+      FunctionName: CreateRiskAnalysisFunction
+      Policies:
+        - LambdaInvokePolicy:
+            FunctionName:
+              Ref: AnalyseRiskFunction
+      Events:
+        CreateRiskAnalysis:
+          Type: Api
+          Properties:
+            Path: /riskAnalyses
+            Method: post
+  BrowseAssetsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: get_assets/
+      Handler: app.lambda_handler
+      Runtime: python3.7
+      FunctionName: BrowseAssetsFunction
+      Policies:
+        - LambdaInvokePolicy:
+            FunctionName:
+              Ref: ListS3ObjectKeysWithPrefixFunction
+      Events:
+        BrowseAssets:
+          Type: Api
+          Properties:
+            Path: /assets
+            Method: get
+  BrowseRiskAnalysesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: get_risk_analyses/
+      Handler: app.lambda_handler
+      Runtime: python3.7
+      FunctionName: BrowseRiskAnalysesFunction
+      Policies:
+        - LambdaInvokePolicy:
+            FunctionName:
+              Ref: ListS3ObjectKeysWithPrefixFunction
+      Events:
+        BrowseRiskAnalyses:
+          Type: Api
+          Properties:
+            Path: /riskAnalyses
+            Method: get
+  BrowseRiskAnalysisFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: get_risk_analysis/
+      Handler: app.lambda_handler
+      Runtime: python3.7
+      FunctionName: BrowseRiskAnalysisFunction
+      Environment:
+        Variables:
+          S3_BUCKET_NAME :
+            Ref: S3BucketName
+      Policies:
+        - S3ReadPolicy:
+            BucketName:
+              Ref: S3BucketName
+      Events:
+        BrowseRiskAnalysis:
+          Type: Api
+          Properties:
+            Path: /riskAnalyses/{id}
+            Method: get
+
+
+Outputs:
+  RiskAnalysisApi:
+    Description: "API Gateway endpoint URL for Prod stage for Risk Analysis system functions"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/assets/"
+  ListS3ObjectKeysWithPrefixFunction:
+    Description: "List S3 Object Keys With Prefix Function ARN"
+    Value: !GetAtt ListS3ObjectKeysWithPrefixFunction.Arn
+  ListS3ObjectKeysWithPrefixFunctionIamRole:
+    Description: "Implicit IAM Role created for List S3 Object Keys With Prefix function"
+    Value: !GetAtt ListS3ObjectKeysWithPrefixFunctionRole.Arn
+  AnalyseRiskFunction:
+    Description: "List S3 Object Keys With Prefix Function ARN"
+    Value: !GetAtt AnalyseRiskFunction.Arn
+  AnalyseRiskFunctionIamRole:
+    Description: "Implicit IAM Role created for List S3 Object Keys With Prefix function"
+    Value: !GetAtt AnalyseRiskFunctionRole.Arn
+  CreateRiskAnalysisFunction:
+    Description: "List S3 Object Keys With Prefix Function ARN"
+    Value: !GetAtt CreateRiskAnalysisFunction.Arn
+  CreateRiskAnalysisFunctionIamRole:
+    Description: "Implicit IAM Role created for List S3 Object Keys With Prefix function"
+    Value: !GetAtt CreateRiskAnalysisFunctionRole.Arn
+  BrowseAssetsFunction:
+    Description: "Browse Assets Function ARN"
+    Value: !GetAtt BrowseAssetsFunction.Arn
+  BrowseAssetsFunctionIamRole:
+    Description: "Implicit IAM Role created for Browse Assets function"
+    Value: !GetAtt BrowseAssetsFunctionRole.Arn
+  BrowseRiskAnalysesFunction:
+    Description: "Browse Assets Function ARN"
+    Value: !GetAtt BrowseRiskAnalysesFunction.Arn
+  BrowseRiskAnalysesFunctionIamRole:
+    Description: "Implicit IAM Role created for Browse Assets function"
+    Value: !GetAtt BrowseRiskAnalysesFunctionRole.Arn
+  BrowseRiskAnalysisFunction:
+    Description: "Browse Assets Function ARN"
+    Value: !GetAtt BrowseRiskAnalysisFunction.Arn
+  BrowseRiskAnalysisFunctionIamRole:
+    Description: "Implicit IAM Role created for Browse Assets function"
+    Value: !GetAtt BrowseRiskAnalysisFunctionRole.Arn
