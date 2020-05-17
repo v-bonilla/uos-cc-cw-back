@@ -24,6 +24,7 @@ def lambda_handler(event, context):
                                               Payload=bytes(json.dumps(payload), encoding='utf8'))
     financial_data_keys = json.loads(list_keys_response['Payload'].read().decode())
     assets = [key_to_asset(key) for key in financial_data_keys]
+    assets.sort(key=lambda asset: int(asset['id']))
     return {
         "body": json.dumps(assets)
     }

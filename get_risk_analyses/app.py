@@ -24,6 +24,7 @@ def lambda_handler(event, context):
                                               Payload=bytes(json.dumps(payload), encoding='utf8'))
     risk_analyses_keys = json.loads(list_keys_response['Payload'].read().decode())
     risk_analyses = [key_to_risk_analysis(key) for key in risk_analyses_keys]
+    risk_analyses.sort(key=lambda analysis: int(analysis['id']))
     return {
         "body": json.dumps(risk_analyses)
     }
