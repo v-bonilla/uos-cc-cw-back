@@ -14,10 +14,10 @@ def lambda_handler(event, context):
     lambda_client = boto3.client('lambda')
     new_analysis_uri_response = lambda_client.invoke(FunctionName='AnalyseRiskFunction',
                                                      Payload=bytes(json.dumps(payload), encoding='utf8'))
-    new_analysis_uri = json.loads(new_analysis_uri_response['Payload'].read().decode())
+    new_analysis_id = json.loads(new_analysis_uri_response['Payload'].read().decode())
     return {
         "statusCode": 201,
         "headers": {
-            "location": new_analysis_uri
+            "location": new_analysis_id
         }
     }
