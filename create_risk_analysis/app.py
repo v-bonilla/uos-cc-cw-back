@@ -6,8 +6,8 @@ assets_prefix = 'financial_data/'
 
 
 def lambda_handler(event, context):
-    # body = json.loads(event.get('body'))
-    body = event.get('body')
+    body = json.loads(event.get('body'))
+    # body = event.get('body')
     lambda_client = boto3.client('lambda')
     asset_id = body.get('id')
     analyse_risk_payload = {
@@ -24,9 +24,9 @@ def lambda_handler(event, context):
         "scalable_services": body.get('scalable_services'),
         "parallel_resources": body.get('parallel_resources')
     }
-    assess_risk_response = lambda_client.invoke(FunctionName='AssessRiskFunction',
-                                                     Payload=bytes(json.dumps(assess_risk_payload), encoding='utf8'))
-    new_analysis_id = json.loads(assess_risk_response['Payload'].read().decode())
+    # Async cause API endpoint timeout is exceeded otherwise
+    lambda_client.invoke(FunctionName='AssessRiskFunction', InvocationType='Event',
+                         Payload=bytes(json.dumps(assess_risk_payload), encoding='utf8'))
     return {
         "statusCode": 201,
         "headers": {

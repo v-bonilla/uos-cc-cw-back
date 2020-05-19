@@ -21,6 +21,7 @@ def lambda_handler(event, context):
     s3_report_path = 's3://' + bucket_name + '/' + report_prefix + report_name + '.csv'
     risk_analysis_metadata_json = '{\"id\": \"' + id + '\", \"report_name\": \"' + report_name + '\", \"data\": '
     report_data_json = pd.read_csv(s3_report_path).to_json()
+    # TODO: Add total_p_l and average_var fields in the response
     risk_analysis_json = risk_analysis_metadata_json + report_data_json + '}'
     return {
         "body": risk_analysis_json

@@ -17,7 +17,7 @@ def calculate_var(df, var_window, mc_samples):
         if index >= var_win_scaled:  # To ensure window
             series = row[1]
             if series['sig'] != 0:
-                price_window = df.iloc[index - var_win_scaled:index + 1, 1]
+                price_window = df.loc[index - var_win_scaled:index + 1, 'Adj Close']
                 change = price_window.rolling(window=2).apply(lambda x: (x.iloc[1] - x.iloc[0])/x.iloc[0]).dropna()
                 mc_series = np.random.normal(change.mean(), change.std(), mc_samples)
                 mc_series.sort()
@@ -48,12 +48,12 @@ def lambda_handler(event, context):
         calculate_var(df, var_window, mc_samples)
         # Store results
         report_s3_url = 's3://' + bucket_name + '/' + 'risk_analyses/' + ra.get('id') + '_' + ra.get('report_name') + '.csv'
-        df.to_csv(report_s3_url)
+        df.to_csv(report_s3_url, index=False)
+        return {
+            "status": 200
+        }
     else:
         parallel_resources = int(event.get('parallel_resources'))
         # launch EMR. code file stored in s3?
         pass
 
-    return {
-        "status": 200
-    }
