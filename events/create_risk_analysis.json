@@ -1,7 +1,11 @@
 {
   "body": {
-      "id": 1,
-      "ma_period": 20
+    "id": 1,
+    "ma_period": 20,
+    "var_window": 101,
+    "mc_samples": 100000,
+    "scalable_services": 0,
+    "parallel_resources": 1
   },
   "resource": "riskAnalyses",
   "path": "/riskAnalyses",
