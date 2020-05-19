@@ -50,6 +50,24 @@ Resources:
         - LambdaInvokePolicy:
             FunctionName:
               Ref: BrowseRiskAnalysesFunction
+  AssessRiskFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: assess_risk/
+      Handler: app.lambda_handler
+      Runtime: python3.7
+      FunctionName: AssessRiskFunction
+      Environment:
+        Variables:
+          S3_BUCKET_NAME:
+            Ref: S3BucketName
+      Policies:
+        - S3WritePolicy:
+            BucketName:
+              Ref: S3BucketName
+        - LambdaInvokePolicy:
+            FunctionName:
+              Ref: BrowseRiskAnalysisFunction
   CreateRiskAnalysisFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -61,6 +79,9 @@ Resources:
         - LambdaInvokePolicy:
             FunctionName:
               Ref: AnalyseRiskFunction
+        - LambdaInvokePolicy:
+            FunctionName:
+              Ref: AssessRiskFunction
       Events:
         CreateRiskAnalysis:
           Type: Api
@@ -128,39 +149,3 @@ Outputs:
   RiskAnalysisApi:
     Description: "API Gateway endpoint URL for Prod stage for Risk Analysis system functions"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/assets/"
-  ListS3ObjectKeysWithPrefixFunction:
-    Description: "List S3 Object Keys With Prefix Function ARN"
-    Value: !GetAtt ListS3ObjectKeysWithPrefixFunction.Arn
-  ListS3ObjectKeysWithPrefixFunctionIamRole:
-    Description: "Implicit IAM Role created for List S3 Object Keys With Prefix function"
-    Value: !GetAtt ListS3ObjectKeysWithPrefixFunctionRole.Arn
-  AnalyseRiskFunction:
-    Description: "List S3 Object Keys With Prefix Function ARN"
-    Value: !GetAtt AnalyseRiskFunction.Arn
-  AnalyseRiskFunctionIamRole:
-    Description: "Implicit IAM Role created for List S3 Object Keys With Prefix function"
-    Value: !GetAtt AnalyseRiskFunctionRole.Arn
-  CreateRiskAnalysisFunction:
-    Description: "List S3 Object Keys With Prefix Function ARN"
-    Value: !GetAtt CreateRiskAnalysisFunction.Arn
-  CreateRiskAnalysisFunctionIamRole:
-    Description: "Implicit IAM Role created for List S3 Object Keys With Prefix function"
-    Value: !GetAtt CreateRiskAnalysisFunctionRole.Arn
-  BrowseAssetsFunction:
-    Description: "Browse Assets Function ARN"
-    Value: !GetAtt BrowseAssetsFunction.Arn
-  BrowseAssetsFunctionIamRole:
-    Description: "Implicit IAM Role created for Browse Assets function"
-    Value: !GetAtt BrowseAssetsFunctionRole.Arn
-  BrowseRiskAnalysesFunction:
-    Description: "Browse Assets Function ARN"
-    Value: !GetAtt BrowseRiskAnalysesFunction.Arn
-  BrowseRiskAnalysesFunctionIamRole:
-    Description: "Implicit IAM Role created for Browse Assets function"
-    Value: !GetAtt BrowseRiskAnalysesFunctionRole.Arn
-  BrowseRiskAnalysisFunction:
-    Description: "Browse Assets Function ARN"
-    Value: !GetAtt BrowseRiskAnalysisFunction.Arn
-  BrowseRiskAnalysisFunctionIamRole:
-    Description: "Implicit IAM Role created for Browse Assets function"
-    Value: !GetAtt BrowseRiskAnalysisFunctionRole.Arn
