@@ -21,7 +21,10 @@ def calculate_var(df, var_window, mc_samples):
                 change = price_window.rolling(window=2).apply(lambda x: (x.iloc[1] - x.iloc[0])/x.iloc[0]).dropna()
                 mc_series = np.random.normal(change.mean(), change.std(), mc_samples)
                 mc_series.sort()
-                var_quantiles = np.quantile(mc_series, [0.95, 0.99])
+                if series['sig'] == 1:
+                    var_quantiles = np.quantile(mc_series, [0.95, 0.99])
+                else:
+                    var_quantiles = np.quantile(mc_series, [0.05, 0.01])
                 df.loc[index, ['var_95', 'var_99']] = [(1 + x) * series['Adj Close'] for x in var_quantiles]
 
 
