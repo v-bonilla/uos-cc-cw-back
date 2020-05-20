@@ -17,7 +17,7 @@ def calculate_var(df, var_window, mc_samples):
         if index >= var_win_scaled:  # To ensure window
             series = row[1]
             if series['sig'] != 0:
-                price_window = df.loc[index - var_win_scaled:index + 1, 'Adj Close']
+                price_window = df.loc[index - var_win_scaled:index, 'Adj Close']
                 change = price_window.rolling(window=2).apply(lambda x: (x.iloc[1] - x.iloc[0])/x.iloc[0]).dropna()
                 mc_series = np.random.normal(change.mean(), change.std(), mc_samples)
                 mc_series.sort()
