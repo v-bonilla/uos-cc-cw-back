@@ -26,7 +26,8 @@ def get_new_ra_id():
 
 
 def get_asset_df(s3_path):
-    return pd.read_csv(s3_path, parse_dates=['Date'], usecols=['Date', 'Adj Close'], index_col='Date').sort_index().convert_dtypes()
+    return pd.read_csv(s3_path, parse_dates=['Date'], dayfirst=True, usecols=['Date', 'Adj Close'],
+                       index_col='Date').sort_index().convert_dtypes()
 
 
 def determine_signal(first, second):
