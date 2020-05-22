@@ -26,6 +26,7 @@ def calculate_var(df, mc_samples_ec2):
             else:
                 var_quantiles = np.quantile(mc_series, [0.05, 0.01])
             df.loc[index, [v95, v99]] = [(1 + x) * series['Adj Close'] for x in var_quantiles]
+    df.drop(columns=['vw_mean', 'vw_std'], inplace=True)
 
 
 def get_s3_objects(s3_client, bucket_name, **base_kwargs):
