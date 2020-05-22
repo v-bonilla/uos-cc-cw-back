@@ -1,2 +1,2 @@
-pandas
-s3fs
+pandas==1.0.3
+s3fs==0.4.2

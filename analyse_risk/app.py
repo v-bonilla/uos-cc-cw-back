@@ -77,5 +77,5 @@ def lambda_handler(event, context):
     report = analyse(asset_df, int(event.get('ma_period')))
     new_report_id = str(get_new_ra_id())
     report_s3_url = 's3://' + bucket_name + '/' + 'risk_analyses/' + new_report_id + '_' + asset_name + '.csv'
-    report.to_csv(report_s3_url, index=False)
+    report.to_csv(report_s3_url)
     return new_report_id
