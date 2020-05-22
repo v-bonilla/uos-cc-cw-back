@@ -64,12 +64,16 @@ Resources:
           S3_BUCKET_NAME:
             Ref: S3BucketName
       Policies:
+        - AmazonEC2FullAccess
         - S3WritePolicy:
             BucketName:
               Ref: S3BucketName
         - LambdaInvokePolicy:
             FunctionName:
               Ref: BrowseRiskAnalysisFunction
+        - LambdaInvokePolicy:
+            FunctionName:
+              Ref: ListS3ObjectKeysWithPrefixFunction
   CreateRiskAnalysisFunction:
     Type: AWS::Serverless::Function
     Properties:
