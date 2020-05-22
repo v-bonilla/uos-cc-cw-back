@@ -7,7 +7,7 @@ assets_prefix = 'financial_data/'
 
 def lambda_handler(event, context):
     body = json.loads(event.get('body'))
-    # body = event.get('body')
+    # body = event.get('body')  # For debugging locally
     lambda_client = boto3.client('lambda')
     asset_id = body.get('id')
     analyse_risk_payload = {
