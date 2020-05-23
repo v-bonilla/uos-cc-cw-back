@@ -68,8 +68,7 @@ def launch_cluster(parallel_resources, report_s3_url, mc_samples_ec2):
     ec2_client = boto3.resource('ec2')
     for id in range(parallel_resources):
         ec2_client.create_instances(InstanceType='t2.micro', MinCount=1, MaxCount=1, ImageId='ami-0323c3dd2da7fb37d',
-                                    InstanceInitiatedShutdownBehavior='terminate', SecurityGroupIds=['sg-08f3f998506ef0548'],
-                                    KeyName='us-east-1-kp',
+                                    InstanceInitiatedShutdownBehavior='terminate',
                                     UserData=user_data_ec2.format(credentials, id, report_s3_url, parallel_resources,
                                                                   mc_samples_ec2))
 
