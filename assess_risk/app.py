@@ -1,5 +1,6 @@
 import json
 import os
+from math import ceil
 
 import numpy as np
 import pandas as pd
@@ -99,7 +100,7 @@ def lambda_handler(event, context):
         parallel_resources = int(event.get('parallel_resources'))
         # Store partial results for ec2 instances
         df.to_csv(report_s3_url, index=False)
-        launch_cluster(parallel_resources, report_s3_url, int(mc_samples / parallel_resources))
+        launch_cluster(parallel_resources, report_s3_url, ceil(mc_samples / parallel_resources))
     return {
         "status": 200
     }
