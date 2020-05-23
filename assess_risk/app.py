@@ -8,9 +8,9 @@ import boto3
 
 bucket_name = os.environ.get('S3_BUCKET_NAME')
 credentials = '''[default]
-aws_access_key_id=ASIARADQARUSLFNCH574
-aws_secret_access_key=gq7l7xstcbjba5suJk8+98fOp5MlNg7/zhwDrUCT
-aws_session_token=FwoGZXIvYXdzEAMaDBd20c6lCNbu2/MXeyLDAWUvxCF8dIlhg9mpXdn//ZvpfdqxfeLiNlApR2dcKyOwDAjb4KjWE+5TFLDqAnAGhco6WuULQRBEfdQ8zt0DZKkO0mDA4ApHZlBKYCISk6M8BcApzgSe+G2GApeBwywckbb2sg9Txpe1NwyeeBONLWdF2V6gg7sC7Cjr1AlUjgYOKVO3oazCkqUCjusIz59uHNtTCiLQpjLVp5ombA+FdVXxjA0UKm1fjbZ6mp/+FsOrDVRytcgKd+cg8WLTctRo+ESlyyijkKD2BTItlUZggeonf/TJs5uXW01zsyWQNL+MoYWxk7TO8n5/yXAf/Zuh/99XMI3oYhoI'''
+aws_access_key_id=ASIARADQARUSGRRAEW5C
+aws_secret_access_key=9yNCR2Uegcxm455OTOPTstHNWHB2CiXGVD7Q7Q9S
+aws_session_token=FwoGZXIvYXdzEBMaDIQsIJyp+4A5IRowOCLDAab7JCPqSgV0z2rMD1vE1a6oyUstZKXj1FpiQKAmm8rsg/stTag4rWkBlCrl9SJKGtNfX/mzdI1KqrNEKEKMA3/cYuoea24Mo+r1AEAFDlk/9kOyHnM4251QvOyaqpBn6k8aSPQkFOnu9FUDsPmFZbximV2DNT1di90qgOt+Tq7AmCjfERYcDsveSPjFc0J5QspErJM65UEEc5eyNLoH5WhnsgmC2uNbK0xhE115ZOuFfEgD/MEav7UmFUt/YgTxLK9XJijJ3aP2BTIt1FJfgONMSTrOSRmAKObCVQ8z+/uBAa4gS7+zKeeUQkKFadIAIELqqSnf67QO'''
 user_data_ec2 = '''#!/bin/bash
 cd /root
 mkdir .aws
@@ -55,7 +55,7 @@ def calculate_var(df, mc_samples):
             else:
                 var_quantiles = np.quantile(mc_series, [0.05, 0.01])
             df.loc[index, ['var_95', 'var_99']] = [(1 + x) * series['Adj Close'] for x in var_quantiles]
-        df.drop(columns=['vw_mean', 'vw_std'], inplace=True)
+    df.drop(columns=['vw_mean', 'vw_std'], inplace=True)
 
 
 def partitions_to_s3(partitions):
