@@ -9,9 +9,8 @@ import boto3
 
 bucket_name = os.environ.get('S3_BUCKET_NAME')
 credentials = '''[default]
-aws_access_key_id=ASIARADQARUSGRRAEW5C
-aws_secret_access_key=9yNCR2Uegcxm455OTOPTstHNWHB2CiXGVD7Q7Q9S
-aws_session_token=FwoGZXIvYXdzEBMaDIQsIJyp+4A5IRowOCLDAab7JCPqSgV0z2rMD1vE1a6oyUstZKXj1FpiQKAmm8rsg/stTag4rWkBlCrl9SJKGtNfX/mzdI1KqrNEKEKMA3/cYuoea24Mo+r1AEAFDlk/9kOyHnM4251QvOyaqpBn6k8aSPQkFOnu9FUDsPmFZbximV2DNT1di90qgOt+Tq7AmCjfERYcDsveSPjFc0J5QspErJM65UEEc5eyNLoH5WhnsgmC2uNbK0xhE115ZOuFfEgD/MEav7UmFUt/YgTxLK9XJijJ3aP2BTIt1FJfgONMSTrOSRmAKObCVQ8z+/uBAa4gS7+zKeeUQkKFadIAIELqqSnf67QO'''
+aws_access_key_id=AKIAZD7FLH3GTFDKY5SC
+aws_secret_access_key=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'''
 user_data_ec2 = '''#!/bin/bash
 cd /root
 mkdir .aws

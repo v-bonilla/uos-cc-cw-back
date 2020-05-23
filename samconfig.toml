@@ -2,11 +2,10 @@ version = 0.1
 [default]
 [default.deploy]
 [default.deploy.parameters]
-stack_name = "uos-cc-cw-back-v1"
-s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-70yp7g1tmawu"
-s3_prefix = "uos-cc-cw-back-v1"
+stack_name = "uos-cc-cw-back"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-10x0lgzr5s2l0"
+s3_prefix = "uos-cc-cw-back"
 region = "us-east-1"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
 parameter_overrides = "S3BucketName=\"uos-cc-cw\""
-
