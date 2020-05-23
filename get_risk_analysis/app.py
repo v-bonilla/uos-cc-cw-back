@@ -23,10 +23,12 @@ def lambda_handler(event, context):
     if 'var_95' in ra.columns:
         ra_var_filtered = ra.loc[ra['var_95'].notna()]
         total_p_l = ra_var_filtered['p_l'].sum()
-        average_var = ra_var_filtered[['var_95', 'var_99']].mean().mean()
-        risk_analysis_metadata_json = '{\"id\": \"' + id + '\", \"report_name\": \"' + report_name + '\", \"total_p_l' \
-                                                                                                     '\": \"' + \
-                                      str(total_p_l) + '\", \"average_var\": \"' + str(average_var) + '\", \"data\": '
+        average_var_95 = ra_var_filtered['var_95'].mean()
+        average_var_99 = ra_var_filtered['var_99'].mean()
+        risk_analysis_metadata_json = '{\"id\": \"' + id + '\", \"report_name\": \"' + report_name + \
+                                      '\", \"total_p_l\": \"' + str(total_p_l) + '\", \"average_var_95\": \"' + \
+                                      str(average_var_95) + '\", \"average_var_99\": \"' + str(average_var_99) + \
+                                      '\", \"data\": '
     else:
         risk_analysis_metadata_json = '{\"id\": \"' + id + '\", \"report_name\": \"' + report_name + '\", \"data\": '
     report_data_json = ra.to_json()
