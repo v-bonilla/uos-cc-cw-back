@@ -71,9 +71,6 @@ Resources:
         - LambdaInvokePolicy:
             FunctionName:
               Ref: BrowseRiskAnalysisFunction
-        - LambdaInvokePolicy:
-            FunctionName:
-              Ref: ListS3ObjectKeysWithPrefixFunction
   CreateRiskAnalysisFunction:
     Type: AWS::Serverless::Function
     Properties:
